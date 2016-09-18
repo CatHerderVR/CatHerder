@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class CatController : MonoBehaviour {
-
     public Vector3 initialVelocity;
     private float yPosition;
 
@@ -110,8 +109,6 @@ public class CatController : MonoBehaviour {
 
                 if (controllerToy.ToLower().Equals(currentToy.ToLower()))
                 {
-                    // var lpObj = GameObject.Find("LaserPointerSurrogate");
-                    // TODO local vs.world matrix?
                     var lpPos = new Vector3(controllerLeft.transform.pos.x, 0, controllerLeft.transform.pos.z);
                     var thisPos = new Vector3(this.transform.position.x, 0, this.transform.position.z);
                     this.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude((lpPos - thisPos) / 2.5f, 1);
@@ -138,8 +135,6 @@ public class CatController : MonoBehaviour {
                     anim.CrossFade("Walk");
                 }
             }
-
-
         }
 
         if (rightController != null)
@@ -153,8 +148,6 @@ public class CatController : MonoBehaviour {
 
                 if (controllerToy.ToLower().Equals(currentToy.ToLower()))
                 {
-                    // var lpObj = GameObject.Find("LaserPointerSurrogate");
-                    // TODO local vs.world matrix?
                     var lpPos = new Vector3(controllerRight.transform.pos.x, 0, controllerRight.transform.pos.z);
                     var thisPos = new Vector3(this.transform.position.x, 0, this.transform.position.z);
                     this.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude((lpPos - thisPos) / 2.5f, 1);
