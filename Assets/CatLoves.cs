@@ -4,6 +4,7 @@ using System.Collections;
 public class CatLoves : MonoBehaviour {
 
     public string[] Toys = { "Laser", "Fish", "Yarn", "Robotuna" };
+    public Texture[] ToyImages;
 
     public string CurrentLove;
     public int CurrentDuration;
@@ -21,6 +22,7 @@ public class CatLoves : MonoBehaviour {
 	void Update ()
     {
         TextFacesCamera();
+        ImageFacesCamera();
 	}
 
     public void SetLove()
@@ -33,7 +35,8 @@ public class CatLoves : MonoBehaviour {
         CurrentDuration = Random.Range(MinLoveDurationInSeconds, MaxLoveDurationInSeconds);
 
         this.transform.FindChild("FloatingText").GetComponent<TextMesh>().text = CurrentLove;
-
+        this.transform.FindChild("Quad").GetComponent<MeshRenderer>().material.mainTexture = ToyImages[index];
+        
         Invoke("SetLove", CurrentDuration);
     }
 
@@ -52,4 +55,21 @@ public class CatLoves : MonoBehaviour {
         this.transform.FindChild("FloatingText").transform.LookAt(camera.transform);
         this.transform.FindChild("FloatingText").transform.Rotate(0, 180, 0);
     }
+
+    public void ImageFacesCamera()
+    {
+        GameObject camera = GameObject.Find("Main Camera");
+        if (camera == null)
+        {
+            camera = GameObject.Find("[CameraRig]");
+        }
+        if (camera == null)
+        {
+            return;
+        }
+
+        this.transform.FindChild("Quad").transform.LookAt(camera.transform);
+        this.transform.FindChild("Quad").transform.Rotate(0, 180, 0);
+    }
+
 }
