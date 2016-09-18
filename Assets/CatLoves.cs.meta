@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+<<<<<<< Updated upstream
+<<<<<<< HEAD
+guid: 77bd54696ad9741f89d21064cfdf3d4a
+timeCreated: 1474174053
+=======
+guid: 1d844ff99fe85f14d8aa92b147899a03
+timeCreated: 1474162922
+>>>>>>> origin/master
+=======
+guid: 09c754cbecd6e5747aa032300eb1b5a2
+timeCreated: 1474216231
+>>>>>>> Stashed changes
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
