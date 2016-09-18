@@ -99,84 +99,99 @@ public class CatController : MonoBehaviour {
         GameObject leftController = GameObject.Find("Controller (left)");
         GameObject rightController = GameObject.Find("Controller (right)");
 
-        if (leftController == null || rightController == null)
+        if (leftController != null)
         {
-            return;
+            var controllerLeft = SteamVR_Controller.Input((int)leftController.GetComponent<SteamVR_TrackedObject>().index);
+
+            if (controllerLeft.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger) == true)
+            {
+                string controllerToy = leftController.GetComponentInChildren<TextMesh>().text;
+                string currentToy = this.GetComponentInChildren<TextMesh>().text;
+
+                if (controllerToy.ToLower().Equals(currentToy.ToLower()))
+                {
+                    // var lpObj = GameObject.Find("LaserPointerSurrogate");
+                    // TODO local vs.world matrix?
+                    var lpPos = new Vector3(controllerLeft.transform.pos.x, 0, controllerLeft.transform.pos.z);
+                    var thisPos = new Vector3(this.transform.position.x, 0, this.transform.position.z);
+                    this.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude((lpPos - thisPos) / 2.5f, 1);
+                    FaceInDirectionOfVelocity();
+                    var anim = this.GetComponentInChildren<Animation>();
+                    anim.wrapMode = WrapMode.Loop;
+                    anim.CrossFade("Run");
+                }
+            }
+
+            if (controllerLeft.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) == true)
+            {
+                string controllerToy = leftController.GetComponentInChildren<TextMesh>().text;
+                string currentToy = this.GetComponentInChildren<TextMesh>().text;
+
+                if (controllerToy.ToLower().Equals(currentToy.ToLower()))
+                {
+                    var lpPos = new Vector3(controllerLeft.transform.pos.x, 0, controllerLeft.transform.pos.z);
+                    var thisPos = new Vector3(this.transform.position.x, 0, this.transform.position.z);
+                    this.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude((thisPos - lpPos) / 2.5f, 1);
+                    FaceInDirectionOfVelocity();
+                    var anim = this.GetComponentInChildren<Animation>();
+                    anim.wrapMode = WrapMode.Loop;
+                    anim.CrossFade("Walk");
+                }
+            }
+
+
         }
 
-        var controllerLeft = SteamVR_Controller.Input((int)leftController.GetComponent<SteamVR_TrackedObject>().index);
-        var controllerRight = SteamVR_Controller.Input((int)rightController.GetComponent<SteamVR_TrackedObject>().index);
-
-        if (controllerLeft.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger) == true)
+        if (rightController != null)
         {
-            string controllerToy = leftController.GetComponentInChildren<TextMesh>().text;
-            string currentToy = this.GetComponentInChildren<TextMesh>().text;
+            var controllerRight = SteamVR_Controller.Input((int)rightController.GetComponent<SteamVR_TrackedObject>().index);
 
-            if (controllerToy.ToLower().Equals(currentToy.ToLower()))
+            if (controllerRight.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger) == true)
             {
-                // var lpObj = GameObject.Find("LaserPointerSurrogate");
-                // TODO local vs.world matrix?
-                var lpPos = new Vector3(controllerLeft.transform.pos.x, 0, controllerLeft.transform.pos.z);
-                var thisPos = new Vector3(this.transform.position.x, 0, this.transform.position.z);
-                this.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude((lpPos - thisPos) / 2.5f, 1);
-                FaceInDirectionOfVelocity();
-                var anim = this.GetComponentInChildren<Animation>();
-                anim.wrapMode = WrapMode.Loop;
-                anim.CrossFade("Run");
+                string controllerToy = rightController.GetComponentInChildren<TextMesh>().text;
+                string currentToy = this.GetComponentInChildren<TextMesh>().text;
+
+                if (controllerToy.ToLower().Equals(currentToy.ToLower()))
+                {
+                    // var lpObj = GameObject.Find("LaserPointerSurrogate");
+                    // TODO local vs.world matrix?
+                    var lpPos = new Vector3(controllerRight.transform.pos.x, 0, controllerRight.transform.pos.z);
+                    var thisPos = new Vector3(this.transform.position.x, 0, this.transform.position.z);
+                    this.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude((lpPos - thisPos) / 2.5f, 1);
+                    FaceInDirectionOfVelocity();
+                    var anim = this.GetComponentInChildren<Animation>();
+                    anim.wrapMode = WrapMode.Loop;
+                    anim.CrossFade("Run");
+                }
             }
+
+            if (controllerRight.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) == true)
+            {
+                string controllerToy = rightController.GetComponentInChildren<TextMesh>().text;
+                string currentToy = this.GetComponentInChildren<TextMesh>().text;
+
+                if (controllerToy.ToLower().Equals(currentToy.ToLower()))
+                {
+                    var lpPos = new Vector3(controllerRight.transform.pos.x, 0, controllerRight.transform.pos.z);
+                    var thisPos = new Vector3(this.transform.position.x, 0, this.transform.position.z);
+                    this.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude((thisPos - lpPos) / 2.5f, 1);
+                    FaceInDirectionOfVelocity();
+                    var anim = this.GetComponentInChildren<Animation>();
+                    anim.wrapMode = WrapMode.Loop;
+                    anim.CrossFade("Walk");
+                }
+            }
+
         }
 
-        if (controllerLeft.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) == true)
+
+    }
+    
+    void OnTriggerEnter(Collider coll)
+    { 
+        if (coll.gameObject.layer == 10)
         {
-            string controllerToy = leftController.GetComponentInChildren<TextMesh>().text;
-            string currentToy = this.GetComponentInChildren<TextMesh>().text;
-
-            if (controllerToy.ToLower().Equals(currentToy.ToLower()))
-            {
-                var lpPos = new Vector3(controllerLeft.transform.pos.x, 0, controllerLeft.transform.pos.z);
-                var thisPos = new Vector3(this.transform.position.x, 0, this.transform.position.z);
-                this.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude((thisPos - lpPos) / 2.5f, 1);
-                FaceInDirectionOfVelocity();
-                var anim = this.GetComponentInChildren<Animation>();
-                anim.wrapMode = WrapMode.Loop;
-                anim.CrossFade("Walk");
-            }
-        }
-
-        if (controllerRight.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger) == true)
-        {
-            string controllerToy = rightController.GetComponentInChildren<TextMesh>().text;
-            string currentToy = this.GetComponentInChildren<TextMesh>().text;
-
-            if (controllerToy.ToLower().Equals(currentToy.ToLower()))
-            {
-                // var lpObj = GameObject.Find("LaserPointerSurrogate");
-                // TODO local vs.world matrix?
-                var lpPos = new Vector3(controllerRight.transform.pos.x, 0, controllerLeft.transform.pos.z);
-                var thisPos = new Vector3(this.transform.position.x, 0, this.transform.position.z);
-                this.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude((lpPos - thisPos) / 2.5f, 1);
-                FaceInDirectionOfVelocity();
-                var anim = this.GetComponentInChildren<Animation>();
-                anim.wrapMode = WrapMode.Loop;
-                anim.CrossFade("Run");
-            }
-        }
-
-        if (controllerRight.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) == true)
-        {
-            string controllerToy = rightController.GetComponentInChildren<TextMesh>().text;
-            string currentToy = this.GetComponentInChildren<TextMesh>().text;
-
-            if (controllerToy.ToLower().Equals(currentToy.ToLower()))
-            {
-                var lpPos = new Vector3(controllerRight.transform.pos.x, 0, controllerLeft.transform.pos.z);
-                var thisPos = new Vector3(this.transform.position.x, 0, this.transform.position.z);
-                this.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude((thisPos - lpPos) / 2.5f, 1);
-                FaceInDirectionOfVelocity();
-                var anim = this.GetComponentInChildren<Animation>();
-                anim.wrapMode = WrapMode.Loop;
-                anim.CrossFade("Walk");
-            }
+            MakeCatDance();
         }
     }
 }

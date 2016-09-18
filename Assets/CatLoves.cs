@@ -16,7 +16,7 @@ public class CatLoves : MonoBehaviour {
     void Start ()
     {
         Toys = new Toy[] {
-            new NamedObjToy("Fish"), new NamedObjToy("Yarn"), new NamedObjToy("Robotuna"),
+//            new NamedObjToy("Fish"), new NamedObjToy("Yarn"), new NamedObjToy("Robotuna"),
             new PathObjToy("Laser", "[CameraRig]", new[] { "Controller (left)", "LaserPointerContainer", "LaserPointer1", "EndFlare" })
         };
         SetLove();
@@ -26,6 +26,7 @@ public class CatLoves : MonoBehaviour {
 	void Update ()
     {
         TextFacesCamera();
+        ImageFacesCamera();
 	}
 
     public void SetLove()
@@ -38,6 +39,14 @@ public class CatLoves : MonoBehaviour {
         CurrentDuration = Random.Range(MinLoveDurationInSeconds, MaxLoveDurationInSeconds);
 
         this.transform.FindChild("FloatingText").GetComponent<TextMesh>().text = CurrentLove.ToyName;
+
+
+        var floatingText = this.transform.FindChild("FloatingText");
+        if(floatingText != null)
+        {
+            floatingText.GetComponent<TextMesh>().text = CurrentLove.ToyName;
+        }
+
 
         Invoke("SetLove", CurrentDuration);
     }
@@ -62,4 +71,21 @@ public class CatLoves : MonoBehaviour {
             this.transform.FindChild("FloatingText").transform.Rotate(0, 180, 0);
         }        
     }
+
+    public void ImageFacesCamera()
+    {
+        GameObject camera = GameObject.Find("Main Camera");
+        if (camera == null)
+        {
+            camera = GameObject.Find("[CameraRig]");
+        }
+        if (camera == null)
+        {
+            return;
+        }
+
+        this.transform.FindChild("Quad").transform.LookAt(camera.transform);
+        this.transform.FindChild("Quad").transform.Rotate(0, 180, 0);
+    }
+
 }

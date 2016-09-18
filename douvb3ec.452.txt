@@ -1,0 +1,23 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   Assets/CatController.cs
+#	modified:   Assets/CatLoves.cs
+#	new file:   Assets/Object_icon/Materials.meta
+#	new file:   Assets/Object_icon/Materials/bell_icon.mat
+#	new file:   Assets/Object_icon/Materials/bell_icon.mat.meta
+#	new file:   Assets/Object_icon/Materials/catnip_icon 1.mat
+#	new file:   Assets/Object_icon/Materials/catnip_icon 1.mat.meta
+#	new file:   Assets/Object_icon/Materials/catnip_icon.mat
+#	new file:   Assets/Object_icon/Materials/catnip_icon.mat.meta
+#	new file:   Assets/Prefabs/Resources.meta
+#	new file:   Assets/Red_Mat.mat
+#	new file:   Assets/Red_Mat.mat.meta
+#	modified:   Assets/_scene/EmilyTestScene.unity
+#	modified:   ProjectSettings/TagManager.asset
+#
+
