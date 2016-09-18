@@ -26,6 +26,11 @@ public class Player : Photon.PunBehaviour, IPunObservable
     [Tooltip( "The local player instance. Use this to know if the local player is represented in the Scene" )]
     public static GameObject LocalPlayerInstance;
 
+    public GameObject avatar;
+
+    public Transform playerGlobal;
+    public Transform playerLocal;
+
     #endregion
 
     #region Private Variables
@@ -55,9 +60,19 @@ public class Player : Photon.PunBehaviour, IPunObservable
     /// </summary>
     public void Start()
     {
+        Debug.Log( "Player Start" );
+
         if( photonView.isMine )
         {
-            transform.SetParent( GameObject.Find( "Camera (head)" ).transform, false );
+            playerGlobal = GameObject.Find( "SteamVR" ) ? GameObject.Find( "Camera (head)" ).transform : GameObject.Find( "Test Camera" ).transform;
+            playerLocal = GameObject.Find( "SteamVR" ) ? GameObject.Find( "Camera (head)" ).transform : GameObject.Find( "Test Camera" ).transform;
+
+            if( GameObject.Find("SteamVR") && GameObject.Find( "SteamVR" ).activeSelf)
+                transform.SetParent( GameObject.Find( "Camera (head)" ).transform, false );
+            else
+                transform.SetParent( GameObject.Find( "Test Camera" ).transform, false );
+
+            this.transform.localPosition = Vector3.zero;
         }
     }
 
@@ -78,15 +93,17 @@ public class Player : Photon.PunBehaviour, IPunObservable
     {
         if( stream.isWriting )
         {
-            // We own this player: send the others our data
-            //stream.SendNext( this.IsFiring );
-            //stream.SendNext( this.Health );
+            stream.SendNext( playerGlobal.position );
+            stream.SendNext( playerGlobal.rotation );
+            stream.SendNext( playerLocal.localPosition );
+            stream.SendNext( playerLocal.localRotation );
         }
         else
         {
-            // Network player, receive data
-            //this.IsFiring = (bool)stream.ReceiveNext();
-            //this.Health = (float)stream.ReceiveNext();
+            this.transform.position = (Vector3)stream.ReceiveNext();
+            this.transform.rotation = (Quaternion)stream.ReceiveNext();
+            avatar.transform.localPosition = (Vector3)stream.ReceiveNext();
+            avatar.transform.localRotation = (Quaternion)stream.ReceiveNext();
         }
     }
 

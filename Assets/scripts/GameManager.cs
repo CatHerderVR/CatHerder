@@ -88,6 +88,12 @@ namespace ExitGames.Demos.DemoAnimator
 			{
 				QuitApplication();
 			}
+
+            if(Input.GetKeyUp(KeyCode.V))
+            {
+                GameObject.Find( "SteamVR" ).SetActive( true );
+                GameObject.Find( "Test Camera" ).SetActive( false );
+            }
 		}
 
 		#endregion
