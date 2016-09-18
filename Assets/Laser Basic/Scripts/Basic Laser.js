@@ -13,7 +13,7 @@
 	
 	var LaserOn = true;    
     
-	var UseUVPan = true;
+	var UseUVPan = false;
 	
 	var EndFlareOffset = 0.0;
 	
@@ -49,7 +49,7 @@
     function Start() {
          lineRenderer = GetComponent(LineRenderer);
          if(lineRenderer.material == "none")
-         lineRenderer.GetComponent.<Renderer>().material = new Material (Shader.Find("LaserAdditive"));
+             lineRenderer.GetComponent.<Renderer>().material = new Material (Shader.Find("VolumetricLineStripAdditive"));
          
          lineRenderer.castShadows = false;
          lineRenderer.receiveShadows = false;
