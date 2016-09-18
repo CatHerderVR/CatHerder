@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: bffea3443b3dd4054ad5f7a553728744
-timeCreated: 1474170407
+guid: 9524b9cc9adced047b12a128bcf2e867
+timeCreated: 1474176767
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -11,7 +11,7 @@ ModelImporter:
     3300000: //RootNode
     4300000: Yarn
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
   animations:
