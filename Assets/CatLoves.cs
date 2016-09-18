@@ -62,7 +62,22 @@ public class CatLoves : MonoBehaviour {
 
     public void TextFacesCamera()
     {
+<<<<<<< HEAD
     //    this.transform.FindChild("FloatingText").transform.LookAt(GameObject.Find("Main Camera").transform);
     //    this.transform.FindChild("FloatingText").transform.Rotate(0, 180, 0);
+=======
+        GameObject camera = GameObject.Find("Main Camera");
+        if (camera == null)
+        {
+            camera = GameObject.Find("[CameraRig]");
+        }
+        if (camera == null)
+        {
+            return;
+        }
+
+        this.transform.FindChild("FloatingText").transform.LookAt(camera.transform);
+        this.transform.FindChild("FloatingText").transform.Rotate(0, 180, 0);
+>>>>>>> 69728aec5c6677e3b87a371248d9836d0f3a4773
     }
 }
