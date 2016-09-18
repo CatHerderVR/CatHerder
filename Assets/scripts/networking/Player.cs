@@ -64,13 +64,18 @@ public class Player : Photon.PunBehaviour, IPunObservable
 
         if( photonView.isMine )
         {
-            playerGlobal = GameObject.Find( "SteamVR" ) ? GameObject.Find( "Camera (head)" ).transform : GameObject.Find( "Test Camera" ).transform;
-            playerLocal = GameObject.Find( "SteamVR" ) ? GameObject.Find( "Camera (head)" ).transform : GameObject.Find( "Test Camera" ).transform;
+            //playerGlobal = GameObject.Find( "SteamVR" ) ? GameObject.Find( "Camera (head)" ).transform : GameObject.Find( "Test Camera" ).transform;
+            //playerLocal = GameObject.Find( "SteamVR" ) ? GameObject.Find( "Camera (head)" ).transform : GameObject.Find( "Test Camera" ).transform;
 
-            if( GameObject.Find("SteamVR") && GameObject.Find( "SteamVR" ).activeSelf)
-                transform.SetParent( GameObject.Find( "Camera (head)" ).transform, false );
-            else
-                transform.SetParent( GameObject.Find( "Test Camera" ).transform, false );
+            //if( GameObject.Find("SteamVR") && GameObject.Find( "SteamVR" ).activeSelf)
+            //    transform.SetParent( GameObject.Find( "Camera (head)" ).transform, false );
+            //else
+            //    transform.SetParent( GameObject.Find( "Test Camera" ).transform, false );
+
+            playerGlobal = Camera.main.transform;
+            playerLocal = Camera.main.transform;
+
+            transform.SetParent( playerGlobal );
 
             this.transform.localPosition = Vector3.zero;
         }
