@@ -22,7 +22,7 @@ public class CatController : MonoBehaviour {
     {
         if (AlwaysChaseLove)
         {
-            var lpPos = this.GetComponent<CatLoves>().CurrentLove();
+            var lpPos = this.GetComponent<CatLoves>().CurrentLove.GetPosition();
             var thisPos = this.transform.position;
             this.GetComponent<Rigidbody>().velocity = (lpPos - thisPos) / 2.5f;
             var anim = this.GetComponentInChildren<Animation>();

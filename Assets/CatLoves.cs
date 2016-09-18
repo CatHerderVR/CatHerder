@@ -4,43 +4,20 @@ using System.Collections;
 using System;
 
 public class CatLoves : MonoBehaviour {
-    public Func<Vector3>[] Toys; 
+    public Toy[] Toys; 
 
-    public Func<Vector3> CurrentLove;
+    public Toy CurrentLove;
     public int CurrentDuration;
 
     public int MaxLoveDurationInSeconds = 15;
     public int MinLoveDurationInSeconds = 5;
 
-    private static Func<Vector3> ObjToy(string name)
-    {
-        return () =>
-        {
-            var lpObj = GameObject.Find(name);
-            return lpObj.transform.position;
-        };
-    }
-
-    private static Func<Vector3> PathToy(string rootObjName, string[] objPath)
-    {
-        return () =>
-        {
-            var lpObj = GameObject.Find(rootObjName);
-            var currTransform = lpObj.transform;
-            foreach(var pathComponent in objPath)
-            {
-                currTransform = currTransform.FindChild(pathComponent);
-            }
-            return currTransform.position;
-        };
-        }
-
     // Use this for initialization
     void Start ()
     {
-        Toys = new Func<Vector3>[] {
-            ObjToy("Fish"), ObjToy("Yarn"), ObjToy("Robotuna"),
-            PathToy("[CameraRig]", new[] { "Controller (left)", "LaserPointerContainer", "LaserPointer1", "EndFlare" })
+        Toys = new Toy[] {
+            new NamedObjToy("Fish"), new NamedObjToy("Yarn"), new NamedObjToy("Robotuna"),
+            new PathObjToy("Laser", "[CameraRig]", new[] { "Controller (left)", "LaserPointerContainer", "LaserPointer1", "EndFlare" })
         };
         SetLove();
 	}
