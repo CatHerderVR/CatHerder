@@ -32,14 +32,24 @@ public class CatLoves : MonoBehaviour {
         //Choose duration
         CurrentDuration = Random.Range(MinLoveDurationInSeconds, MaxLoveDurationInSeconds);
 
-       // this.transform.FindChild("FloatingText").GetComponent<TextMesh>().text = CurrentLove;
+        this.transform.FindChild("FloatingText").GetComponent<TextMesh>().text = CurrentLove;
 
         Invoke("SetLove", CurrentDuration);
     }
 
     public void TextFacesCamera()
     {
-        this.transform.FindChild("FloatingText").transform.LookAt(GameObject.Find("Main Camera").transform);
+        GameObject camera = GameObject.Find("Main Camera");
+        if (camera == null)
+        {
+            camera = GameObject.Find("[CameraRig]");
+        }
+        if (camera == null)
+        {
+            return;
+        }
+
+        this.transform.FindChild("FloatingText").transform.LookAt(camera.transform);
         this.transform.FindChild("FloatingText").transform.Rotate(0, 180, 0);
     }
 }
