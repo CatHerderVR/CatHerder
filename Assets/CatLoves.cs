@@ -16,7 +16,7 @@ public class CatLoves : MonoBehaviour {
     void Start ()
     {
         Toys = new Toy[] {
-            new NamedObjToy("Fish"), new NamedObjToy("Yarn"), new NamedObjToy("Robotuna"),
+//            new NamedObjToy("Fish"), new NamedObjToy("Yarn"), new NamedObjToy("Robotuna"),
             new PathObjToy("Laser", "[CameraRig]", new[] { "Controller (left)", "LaserPointerContainer", "LaserPointer1", "EndFlare" })
         };
         SetLove();
@@ -37,16 +37,16 @@ public class CatLoves : MonoBehaviour {
 
         //Choose duration
         CurrentDuration = Random.Range(MinLoveDurationInSeconds, MaxLoveDurationInSeconds);
-<<<<<<< HEAD
+
         this.transform.FindChild("FloatingText").GetComponent<TextMesh>().text = CurrentLove.ToyName;
-=======
+
 
         var floatingText = this.transform.FindChild("FloatingText");
         if(floatingText != null)
         {
             floatingText.GetComponent<TextMesh>().text = CurrentLove.ToyName;
         }
->>>>>>> c65defaf37fbab914ea6e89c425517b4654ae4b3
+
 
         Invoke("SetLove", CurrentDuration);
     }
