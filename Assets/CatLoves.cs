@@ -3,13 +3,13 @@ using System.Collections;
 
 public class CatLoves : MonoBehaviour {
 
-    public string[] Toys = { "Laser", "Yarn" };
+    public string[] Toys = { "Laser", "Fish", "Yarn", "Robotuna" };
 
     public string CurrentLove;
     public int CurrentDuration;
 
-    public int MaxLoveDurationInSeconds = 50;
-    public int MinLoveDurationInSeconds = 10;
+    public int MaxLoveDurationInSeconds = 15;
+    public int MinLoveDurationInSeconds = 5;
 
     // Use this for initialization
     void Start ()
@@ -32,7 +32,7 @@ public class CatLoves : MonoBehaviour {
         //Choose duration
         CurrentDuration = Random.Range(MinLoveDurationInSeconds, MaxLoveDurationInSeconds);
 
-        this.transform.FindChild("FloatingText").GetComponent<TextMesh>().text = CurrentLove;
+       // this.transform.FindChild("FloatingText").GetComponent<TextMesh>().text = CurrentLove;
 
         Invoke("SetLove", CurrentDuration);
     }
