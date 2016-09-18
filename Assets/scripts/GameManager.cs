@@ -31,6 +31,8 @@ namespace ExitGames.Demos.DemoAnimator
 		[Tooltip("The prefab to use for representing the player")]
 		public GameObject playerPrefab;
 
+        public GameObject catToyPrefab;
+
 		#endregion
 
 		#region Private Variables
@@ -68,6 +70,7 @@ namespace ExitGames.Demos.DemoAnimator
 
 					// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
 					PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f,0f,0f), Quaternion.identity, 0);
+					PhotonNetwork.Instantiate(this.catToyPrefab.name, new Vector3(0f,0f,0f), Quaternion.identity, 0);
 				}else{
 
 					Debug.Log("Ignoring scene load for "+ SceneManagerHelper.ActiveSceneName);
