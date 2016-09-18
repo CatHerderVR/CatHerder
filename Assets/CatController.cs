@@ -12,25 +12,19 @@ public class CatController : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        this.yPosition = this.transform.position.y;
         this.GetComponent<Rigidbody>().velocity = initialVelocity;
         FaceInDirectionOfVelocity();
-        this.yPosition = this.transform.localPosition.y;
         MakeCatWalk();
 	}
 	
-	// Update is called once per frame
-	void Update ()
+	void FixedUpdate ()
     {
-        FaceInDirectionOfVelocity();
-
         if (AlwaysChaseLove)
         {
-            var lpObj = GameObject.Find(this.GetComponent<CatLoves>().CurrentLove);
-            // TODO local vs.world matrix?
-            var lpPos = lpObj.transform.localPosition;
-            var thisPos = this.transform.localPosition;
+            var lpPos = this.GetComponent<CatLoves>().CurrentLove.GetPosition();
+            var thisPos = this.transform.position;
             this.GetComponent<Rigidbody>().velocity = (lpPos - thisPos) / 2.5f;
-            FaceInDirectionOfVelocity();
             var anim = this.GetComponentInChildren<Animation>();
             anim.wrapMode = WrapMode.Loop;
             anim.CrossFade("Run");
@@ -41,9 +35,9 @@ public class CatController : MonoBehaviour {
             UpdateViveControllersTest();
         }
 
-        FaceInDirectionOfVelocity();
         ClampY();
-    }
+        FaceInDirectionOfVelocity();
+   }
 
     void FaceInDirectionOfVelocity()
     {
@@ -56,7 +50,7 @@ public class CatController : MonoBehaviour {
     {
         this.GetComponent<Rigidbody>().velocity = new Vector3(this.GetComponent<Rigidbody>().velocity.x, 0, this.GetComponent<Rigidbody>().velocity.z);
 
-        this.transform.position = new Vector3(this.transform.position.x, yPosition, this.transform.position.z);
+         this.transform.position = new Vector3(this.transform.position.x, yPosition, this.transform.position.z);
     }
 
     public void MakeCatRun()
