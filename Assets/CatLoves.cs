@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
+using Random = UnityEngine.Random;
 using System.Collections;
+using System;
 
 public class CatLoves : MonoBehaviour {
+    public Toy[] Toys; 
 
-    public string[] Toys = { "Laser", "Fish", "Yarn", "Robotuna" };
-    public Texture[] ToyImages;
-
-    public string CurrentLove;
+    public Toy CurrentLove;
     public int CurrentDuration;
 
     public int MaxLoveDurationInSeconds = 15;
@@ -15,6 +15,10 @@ public class CatLoves : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        Toys = new Toy[] {
+            new NamedObjToy("Fish"), new NamedObjToy("Yarn"), new NamedObjToy("Robotuna"),
+            new PathObjToy("Laser", "[CameraRig]", new[] { "Controller (left)", "LaserPointerContainer", "LaserPointer1", "EndFlare" })
+        };
         SetLove();
 	}
 	
@@ -33,10 +37,8 @@ public class CatLoves : MonoBehaviour {
 
         //Choose duration
         CurrentDuration = Random.Range(MinLoveDurationInSeconds, MaxLoveDurationInSeconds);
+        this.transform.FindChild("FloatingText").GetComponent<TextMesh>().text = CurrentLove.ToyName;
 
-        this.transform.FindChild("FloatingText").GetComponent<TextMesh>().text = CurrentLove;
-        this.transform.FindChild("Quad").GetComponent<MeshRenderer>().material.mainTexture = ToyImages[index];
-        
         Invoke("SetLove", CurrentDuration);
     }
 
@@ -46,14 +48,19 @@ public class CatLoves : MonoBehaviour {
         if (camera == null)
         {
             camera = GameObject.Find("[CameraRig]");
+
         }
         if (camera == null)
         {
             return;
         }
 
-        this.transform.FindChild("FloatingText").transform.LookAt(camera.transform);
-        this.transform.FindChild("FloatingText").transform.Rotate(0, 180, 0);
+        var floatingText = this.transform.FindChild("FloatingText");
+        if (floatingText != null)
+        {
+            this.transform.FindChild("FloatingText").transform.LookAt(camera.transform);
+            this.transform.FindChild("FloatingText").transform.Rotate(0, 180, 0);
+        }        
     }
 
     public void ImageFacesCamera()
