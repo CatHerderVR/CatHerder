@@ -11,16 +11,15 @@ public class CatController : MonoBehaviour {
     {
         this.GetComponent<Rigidbody>().velocity = initialVelocity;
         FaceInDirectionOfVelocity();
-        this.yPosition = this.transform.localPosition.y;
+        this.yPosition = this.transform.position.y;
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	void FixedUpdate ()
     {
-        var lpObj = GameObject.Find(this.GetComponent<CatLoves>().CurrentLove);
-       // TODO local vs.world matrix?
-        var lpPos = lpObj.transform.localPosition;
-        var thisPos = this.transform.localPosition;
+        //TODO local vs.world matrix?
+        var lpPos = this.GetComponent<CatLoves>().CurrentLove();
+        var thisPos = this.transform.position;
         this.GetComponent<Rigidbody>().velocity = (lpPos - thisPos) / 2.5f;
         FaceInDirectionOfVelocity();
         var anim = this.GetComponentInChildren<Animation>();
@@ -28,7 +27,7 @@ public class CatController : MonoBehaviour {
         anim.CrossFade("Run");
 
         ClampY();
-    }
+   }
 
     void FaceInDirectionOfVelocity()
     {
@@ -41,6 +40,6 @@ public class CatController : MonoBehaviour {
     {
         this.GetComponent<Rigidbody>().velocity = new Vector3(this.GetComponent<Rigidbody>().velocity.x, 0, this.GetComponent<Rigidbody>().velocity.z);
 
-        this.transform.position = new Vector3(this.transform.position.x, yPosition, this.transform.position.z);
+         this.transform.position = new Vector3(this.transform.position.x, yPosition, this.transform.position.z);
     }
 }

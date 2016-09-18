@@ -1,19 +1,42 @@
 ﻿using UnityEngine;
+using Random = UnityEngine.Random;
 using System.Collections;
+using System;
 
 public class CatLoves : MonoBehaviour {
+    public Func<Vector3>[] Toys; 
 
-    public string[] Toys = { "Laser", "Fish", "Yarn", "Robotuna" };
-
-    public string CurrentLove;
+    public Func<Vector3> CurrentLove;
     public int CurrentDuration;
 
     public int MaxLoveDurationInSeconds = 15;
     public int MinLoveDurationInSeconds = 5;
 
+    private static Func<Vector3> ObjToy(string name)
+    {
+        return () =>
+        {
+            var lpObj = GameObject.Find(name);
+            return lpObj.transform.position;
+        };
+    }
+
+    private static Func<Vector3> LaserPointerToy(string name)
+    {
+        return () =>
+        {
+            var lpObj = GameObject.Find(name);
+            return lpObj.transform.FindChild("EndFlare").position;
+        };
+        }
+
     // Use this for initialization
     void Start ()
     {
+        Toys = new Func<Vector3>[] {
+            ObjToy("Fish"), ObjToy("Yarn"), ObjToy("Robotuna"),
+            LaserPointerToy("LaserPointer1")
+        };
         SetLove();
 	}
 	
@@ -39,7 +62,7 @@ public class CatLoves : MonoBehaviour {
 
     public void TextFacesCamera()
     {
-        this.transform.FindChild("FloatingText").transform.LookAt(GameObject.Find("Main Camera").transform);
-        this.transform.FindChild("FloatingText").transform.Rotate(0, 180, 0);
+    //    this.transform.FindChild("FloatingText").transform.LookAt(GameObject.Find("Main Camera").transform);
+    //    this.transform.FindChild("FloatingText").transform.Rotate(0, 180, 0);
     }
 }
