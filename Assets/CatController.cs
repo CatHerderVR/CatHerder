@@ -15,7 +15,16 @@ public class CatController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        var lpObj = GameObject.Find("LaserPointerSurrogate");
+       // TODO local vs.world matrix?
+        var lpPos = lpObj.transform.localPosition;
+        var thisPos = this.transform.localPosition;
+        this.GetComponent<Rigidbody>().velocity = (lpPos - thisPos) / 2.5f;
         FaceInDirectionOfVelocity();
+        var anim = this.GetComponentInChildren<Animation>();
+        anim.wrapMode = WrapMode.Loop;
+        anim.CrossFade("Run");
+
         ClampY();
     }
 
