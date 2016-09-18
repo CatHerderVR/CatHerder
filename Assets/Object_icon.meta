@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Object_icon.meta
 guid: 061d32ee75ef0e64e8a75558a095b267
 folderAsset: yes
 timeCreated: 1474221361
+=======
+guid: 2c6759d5d3b5f7147bee564b62adb15c
+folderAsset: yes
+timeCreated: 1474219079
+>>>>>>> origin/master:Assets/Object_icon.meta
 licenseType: Free
 DefaultImporter:
   userData: 
