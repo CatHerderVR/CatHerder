@@ -12,36 +12,19 @@ public class CatController : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        this.yPosition = this.transform.position.y;
         this.GetComponent<Rigidbody>().velocity = initialVelocity;
         FaceInDirectionOfVelocity();
-<<<<<<< HEAD
-        this.yPosition = this.transform.position.y;
-=======
-        this.yPosition = this.transform.localPosition.y;
         MakeCatWalk();
->>>>>>> 69728aec5c6677e3b87a371248d9836d0f3a4773
 	}
 	
-	// Update is called once per frame
 	void FixedUpdate ()
     {
-<<<<<<< HEAD
-        //TODO local vs.world matrix?
-        var lpPos = this.GetComponent<CatLoves>().CurrentLove();
-        var thisPos = this.transform.position;
-        this.GetComponent<Rigidbody>().velocity = (lpPos - thisPos) / 2.5f;
-=======
->>>>>>> 69728aec5c6677e3b87a371248d9836d0f3a4773
-        FaceInDirectionOfVelocity();
-
         if (AlwaysChaseLove)
         {
-            var lpObj = GameObject.Find(this.GetComponent<CatLoves>().CurrentLove);
-            // TODO local vs.world matrix?
-            var lpPos = lpObj.transform.localPosition;
-            var thisPos = this.transform.localPosition;
+            var lpPos = this.GetComponent<CatLoves>().CurrentLove();
+            var thisPos = this.transform.position;
             this.GetComponent<Rigidbody>().velocity = (lpPos - thisPos) / 2.5f;
-            FaceInDirectionOfVelocity();
             var anim = this.GetComponentInChildren<Animation>();
             anim.wrapMode = WrapMode.Loop;
             anim.CrossFade("Run");
@@ -52,8 +35,8 @@ public class CatController : MonoBehaviour {
             UpdateViveControllersTest();
         }
 
-        FaceInDirectionOfVelocity();
         ClampY();
+        FaceInDirectionOfVelocity();
    }
 
     void FaceInDirectionOfVelocity()

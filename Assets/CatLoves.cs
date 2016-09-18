@@ -21,12 +21,17 @@ public class CatLoves : MonoBehaviour {
         };
     }
 
-    private static Func<Vector3> LaserPointerToy(string name)
+    private static Func<Vector3> PathToy(string rootObjName, string[] objPath)
     {
         return () =>
         {
-            var lpObj = GameObject.Find(name);
-            return lpObj.transform.FindChild("EndFlare").position;
+            var lpObj = GameObject.Find(rootObjName);
+            var currTransform = lpObj.transform;
+            foreach(var pathComponent in objPath)
+            {
+                currTransform = currTransform.FindChild(pathComponent);
+            }
+            return currTransform.position;
         };
         }
 
@@ -35,7 +40,7 @@ public class CatLoves : MonoBehaviour {
     {
         Toys = new Func<Vector3>[] {
             ObjToy("Fish"), ObjToy("Yarn"), ObjToy("Robotuna"),
-            LaserPointerToy("LaserPointer1")
+            PathToy("[CameraRig]", new[] { "Controller (left)", "LaserPointerContainer", "LaserPointer1", "EndFlare" })
         };
         SetLove();
 	}
@@ -62,22 +67,22 @@ public class CatLoves : MonoBehaviour {
 
     public void TextFacesCamera()
     {
-<<<<<<< HEAD
-    //    this.transform.FindChild("FloatingText").transform.LookAt(GameObject.Find("Main Camera").transform);
-    //    this.transform.FindChild("FloatingText").transform.Rotate(0, 180, 0);
-=======
         GameObject camera = GameObject.Find("Main Camera");
         if (camera == null)
         {
             camera = GameObject.Find("[CameraRig]");
+
         }
         if (camera == null)
         {
             return;
         }
 
-        this.transform.FindChild("FloatingText").transform.LookAt(camera.transform);
-        this.transform.FindChild("FloatingText").transform.Rotate(0, 180, 0);
->>>>>>> 69728aec5c6677e3b87a371248d9836d0f3a4773
+        var floatingText = this.transform.FindChild("FloatingText");
+        if (floatingText != null)
+        {
+            this.transform.FindChild("FloatingText").transform.LookAt(camera.transform);
+            this.transform.FindChild("FloatingText").transform.Rotate(0, 180, 0);
+        }        
     }
 }
