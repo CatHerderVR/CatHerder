@@ -37,7 +37,7 @@ public class CatLoves : MonoBehaviour {
         //Choose duration
         CurrentDuration = Random.Range(MinLoveDurationInSeconds, MaxLoveDurationInSeconds);
 
-       // this.transform.FindChild("FloatingText").GetComponent<TextMesh>().text = CurrentLove;
+        this.transform.FindChild("FloatingText").GetComponent<TextMesh>().text = CurrentLove.ToyName;
 
         Invoke("SetLove", CurrentDuration);
     }
