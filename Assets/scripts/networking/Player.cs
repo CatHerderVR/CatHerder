@@ -64,7 +64,7 @@ public class Player : Photon.PunBehaviour, IPunObservable
 
         if( photonView.isMine )
         {
-            //playerGlobal = GameObject.Find( "SteamVR" ) ? GameObject.Find( "Camera (head)" ).transform : GameObject.Find( "Test Camera" ).transform;
+            playerGlobal = GameObject.Find( "SteamVR" ) ? GameObject.Find( "Camera (eye)" ).transform : GameObject.Find( "Main Camera" ).transform;
             //playerLocal = GameObject.Find( "SteamVR" ) ? GameObject.Find( "Camera (head)" ).transform : GameObject.Find( "Test Camera" ).transform;
 
             //if( GameObject.Find("SteamVR") && GameObject.Find( "SteamVR" ).activeSelf)
@@ -72,12 +72,13 @@ public class Player : Photon.PunBehaviour, IPunObservable
             //else
             //    transform.SetParent( GameObject.Find( "Test Camera" ).transform, false );
 
-            playerGlobal = Camera.main.transform;
+            //playerGlobal = Camera.main.transform;
             playerLocal = Camera.main.transform;
 
             transform.SetParent( playerGlobal );
 
             this.transform.localPosition = Vector3.zero;
+            this.transform.localRotation = Quaternion.Euler( 0, 0, 0 );
         }
     }
 
@@ -100,15 +101,15 @@ public class Player : Photon.PunBehaviour, IPunObservable
         {
             stream.SendNext( playerGlobal.position );
             stream.SendNext( playerGlobal.rotation );
-            stream.SendNext( playerLocal.localPosition );
-            stream.SendNext( playerLocal.localRotation );
+            //stream.SendNext( playerLocal.localPosition );
+            //stream.SendNext( playerLocal.localRotation );
         }
         else
         {
             this.transform.position = (Vector3)stream.ReceiveNext();
             this.transform.rotation = (Quaternion)stream.ReceiveNext();
-            avatar.transform.localPosition = (Vector3)stream.ReceiveNext();
-            avatar.transform.localRotation = (Quaternion)stream.ReceiveNext();
+            //avatar.transform.localPosition = (Vector3)stream.ReceiveNext();
+            //avatar.transform.localRotation = (Quaternion)stream.ReceiveNext();
         }
     }
 
