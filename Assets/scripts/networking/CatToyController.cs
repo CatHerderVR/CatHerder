@@ -26,7 +26,7 @@ public class CatToyController : Photon.PunBehaviour, IPunObservable
     [Tooltip( "The local player instance. Use this to know if the local player is represented in the Scene" )]
     public static GameObject LocalPlayerInstance;
 
-    public GameObject avatar;
+    public GameObject ToyPrefab;
 
     public Transform toyGlobal;
     public Transform toyLocal;
@@ -79,7 +79,12 @@ public class CatToyController : Photon.PunBehaviour, IPunObservable
 
             this.transform.localPosition = Vector3.zero;
             this.transform.localRotation = Quaternion.Euler( 0, 0, 0 );
+
+            toyLocal.FindChild( "Model" ).gameObject.SetActive( false );
         }
+
+        //GameObject.Instantiate( Resources.Load<GameObject>( "[Laser_Kitty]" ), transform.FindChild("ToyHolder"), false );
+        GameObject.Instantiate( ToyPrefab, transform.FindChild( "ToyHolder" ), false );
     }
 
     /// <summary>
