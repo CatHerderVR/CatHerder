@@ -7,6 +7,7 @@ public class CatController : MonoBehaviour {
 
     public bool TestToysWithViveControllers = true;
     public bool AlwaysChaseLove = true;
+    public float CatSpeed = 1;
 
 	// Use this for initialization
 	void Start ()
@@ -23,7 +24,8 @@ public class CatController : MonoBehaviour {
         {
             var lpPos = this.GetComponent<CatLoves>().CurrentLove.GetPosition();
             var thisPos = this.transform.position;
-            this.GetComponent<Rigidbody>().velocity = (lpPos - thisPos) / 2.5f;
+            Vector3 vDiff = ( lpPos - thisPos );
+            this.GetComponent<Rigidbody>().velocity = vDiff / vDiff.magnitude * CatSpeed;
             var anim = this.GetComponentInChildren<Animation>();
             anim.wrapMode = WrapMode.Loop;
             anim.CrossFade("Run");

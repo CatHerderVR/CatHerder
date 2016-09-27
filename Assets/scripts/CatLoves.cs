@@ -16,8 +16,9 @@ public class CatLoves : MonoBehaviour {
     void Start ()
     {
         Toys = new Toy[] {
+            new NamedObjToy("EndFlare")
 //            new NamedObjToy("Fish"), new NamedObjToy("Yarn"), new NamedObjToy("Robotuna"),
-            new PathObjToy("Laser", "[CameraRig]", new[] { "Controller (left)", "LaserPointerContainer", "LaserPointer1", "EndFlare" })
+            //new PathObjToy("Laser", "[CameraRig]", new[] { "Controller (right)", "LaserPointerContainer", "LaserPointer1", "EndFlare" })
         };
         SetLove();
 	}

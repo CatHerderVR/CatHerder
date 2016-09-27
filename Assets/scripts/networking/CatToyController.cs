@@ -28,12 +28,12 @@ public class CatToyController : Photon.PunBehaviour, IPunObservable
 
     public GameObject ToyPrefab;
 
-    public Transform toyGlobal;
-    public Transform toyLocal;
+    Transform _controllerTransform;
 
     #endregion
 
     #region Private Variables
+    bool _attached = false;
     #endregion
 
     #region MonoBehaviour CallBacks
@@ -60,31 +60,26 @@ public class CatToyController : Photon.PunBehaviour, IPunObservable
     /// </summary>
     public void Start()
     {
-        Debug.Log( "cat toy Start" );
+        GameObject.Instantiate( ToyPrefab, transform.FindChild( "ToyHolder" ), false );
+    }
 
-        if( photonView.isMine )
+    void AttachToyToController()
+    {
+        GameObject controllerObj = GameObject.Find( "Controller (right)" );
+
+        if( photonView.isMine && controllerObj != null)
         {
-            toyGlobal = GameObject.Find( "Controller (right)" ).transform;
-            //toyLocal = GameObject.Find( "SteamVR" ) ? GameObject.Find( "Camera (head)" ).transform : GameObject.Find( "Test Camera" ).transform;
+            _attached = true;
 
-            //if( GameObject.Find("SteamVR") && GameObject.Find( "SteamVR" ).activeSelf)
-            //    transform.SetParent( GameObject.Find( "Camera (head)" ).transform, false );
-            //else
-            //    transform.SetParent( GameObject.Find( "Test Camera" ).transform, false );
+            _controllerTransform = controllerObj.transform;
 
-            //toyGlobal = Camera.main.transform;
-            toyLocal = GameObject.Find( "Controller (right)" ).transform;
-
-            transform.SetParent( toyGlobal );
+            transform.SetParent( _controllerTransform );
 
             this.transform.localPosition = Vector3.zero;
             this.transform.localRotation = Quaternion.Euler( 0, 0, 0 );
 
-            toyLocal.FindChild( "Model" ).gameObject.SetActive( false );
+            _controllerTransform.FindChild( "Model" ).gameObject.SetActive( false );
         }
-
-        //GameObject.Instantiate( Resources.Load<GameObject>( "[Laser_Kitty]" ), transform.FindChild("ToyHolder"), false );
-        GameObject.Instantiate( ToyPrefab, transform.FindChild( "ToyHolder" ), false );
     }
 
     /// <summary>
@@ -95,6 +90,8 @@ public class CatToyController : Photon.PunBehaviour, IPunObservable
     /// </summary>
     public void Update()
     {
+        if( !_attached )
+            AttachToyToController();
     }
     #endregion
 
@@ -104,17 +101,15 @@ public class CatToyController : Photon.PunBehaviour, IPunObservable
     {
         if( stream.isWriting )
         {
-            stream.SendNext( toyGlobal.position );
-            stream.SendNext( toyGlobal.rotation );
-            //stream.SendNext( toyLocal.localPosition );
-            //stream.SendNext( toyLocal.localRotation );
+            stream.SendNext( transform.position );
+            stream.SendNext( transform.rotation );
+            //stream.SendNext( _controllerTransform.position );
+            //stream.SendNext( _controllerTransform.rotation );
         }
         else
         {
             this.transform.position = (Vector3)stream.ReceiveNext();
             this.transform.rotation = (Quaternion)stream.ReceiveNext();
-            //avatar.transform.localPosition = (Vector3)stream.ReceiveNext();
-            //avatar.transform.localRotation = (Quaternion)stream.ReceiveNext();
         }
     }
 

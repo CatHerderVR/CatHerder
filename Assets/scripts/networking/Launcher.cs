@@ -84,16 +84,16 @@ namespace ExitGames.Demos.DemoAnimator
 
         void Start()
         {
-            //Connect(); 
+            Connect(); 
         }
 
         void Update()
         {
-            if( Input.GetKeyUp( KeyCode.Space ) )
-                GameObject.Find( "Game Manager" ).GetComponent<GameManager>().enabled = true;
+            //if( Input.GetKeyUp( KeyCode.Space ) )
+            //    GameObject.Find( "Game Manager" ).GetComponent<GameManager>().enabled = true;
 
-            if( Input.GetKeyUp( KeyCode.A ) )
-                Connect();
+            //if( Input.GetKeyUp( KeyCode.A ) )
+            //    Connect();
         }
 		#endregion
 
@@ -231,6 +231,10 @@ namespace ExitGames.Demos.DemoAnimator
 		/// </remarks>
 		public override void OnJoinedRoom()
 		{
+            LogFeedback( "Connected!" );
+
+            GameManager.Instance.SpawnPlayer();
+
 			//LogFeedback("<Color=Green>OnJoinedRoom</Color> with "+PhotonNetwork.room.playerCount+" Player(s)");
 			//Debug.Log("DemoAnimator/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.\nFrom here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
 		

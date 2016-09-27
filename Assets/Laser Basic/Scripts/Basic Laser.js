@@ -87,7 +87,7 @@
     function Update() {
     	if(LaserDirection=="x" || LaserDirection=="X"){		
         	LaserDirection="X";
-        	LaserDir = StartPoint.right;
+        	LaserDir = -StartPoint.right;
         }
         else if(LaserDirection=="y" || LaserDirection=="Y"){
         	LaserDirection="Y";

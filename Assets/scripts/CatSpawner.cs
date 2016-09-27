@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CatSpawner : MonoBehaviour {
+public class CatSpawner : MonoBehaviour
+{
+    string[] _catNames = { "SiameseCat", "BlackCat", "OrangeCat", "StripedCat" };
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 	
 	}
 	
@@ -24,11 +26,10 @@ public class CatSpawner : MonoBehaviour {
         }
     }
 
-void SpawnCat()
+    public void SpawnCat()
     {
-        string[] catNames = { "SiameseCat" };
 
-        GameObject originalCat = GameObject.Find("SiameseCat");
+        GameObject originalCat = Resources.Load<GameObject>( "Cats/" + _catNames[Random.Range(0,_catNames.Length)] );
 
         GameObject.Instantiate(originalCat, new Vector3(0, 0, 0), Quaternion.identity);
     }

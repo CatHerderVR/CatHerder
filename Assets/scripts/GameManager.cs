@@ -39,17 +39,21 @@ namespace ExitGames.Demos.DemoAnimator
 
 		private GameObject instance;
 
-		#endregion
+        #endregion
 
-		#region MonoBehaviour CallBacks
+        #region MonoBehaviour CallBacks
 
-		/// <summary>
-		/// MonoBehaviour method called on GameObject by Unity during initialization phase.
-		/// </summary>
-		void Start()
-		{
-			Instance = this;
+        /// <summary>
+        /// MonoBehaviour method called on GameObject by Unity during initialization phase.
+        /// </summary>
+        void Start()
+        {
+            Instance = this;
+        }
 
+
+        public void SpawnPlayer()
+        { 
 			//// in case we started this demo with the wrong scene being active, simply load the menu scene
 			//if (!PhotonNetwork.connected)
 			//{
@@ -92,22 +96,28 @@ namespace ExitGames.Demos.DemoAnimator
 				QuitApplication();
 			}
 
-            if(Input.GetKeyUp(KeyCode.V))
+            //if(Input.GetKeyUp(KeyCode.V))
+            //{
+            //    GameObject.Find( "SteamVR" ).SetActive( true );
+            //    GameObject.Find( "Test Camera" ).SetActive( false );
+            //}
+
+            if( Input.GetKeyUp( KeyCode.Space ) )
             {
-                GameObject.Find( "SteamVR" ).SetActive( true );
-                GameObject.Find( "Test Camera" ).SetActive( false );
+                GetComponent<CatSpawner>().SpawnCat();
             }
-		}
 
-		#endregion
+        }
 
-		#region Photon Messages
+        #endregion
 
-		/// <summary>
-		/// Called when a Photon Player got connected. We need to then load a bigger scene.
-		/// </summary>
-		/// <param name="other">Other.</param>
-		public void OnPhotonPlayerConnected( PhotonPlayer other  )
+        #region Photon Messages
+
+        /// <summary>
+        /// Called when a Photon Player got connected. We need to then load a bigger scene.
+        /// </summary>
+        /// <param name="other">Other.</param>
+        public void OnPhotonPlayerConnected( PhotonPlayer other  )
 		{
 			Debug.Log( "OnPhotonPlayerConnected() " + other.name ); // not seen if you're the player connecting
 
