@@ -3,23 +3,31 @@ using Random = UnityEngine.Random;
 using System.Collections;
 using System;
 
-public class CatLoves : MonoBehaviour {
-    public Toy[] Toys; 
+public class CatLoves : MonoBehaviour
+{
+    //public Toy[] Toys; 
 
-    public Toy CurrentLove;
+    //public Toy CurrentLove;
     public int CurrentDuration;
 
     public int MaxLoveDurationInSeconds = 15;
     public int MinLoveDurationInSeconds = 5;
 
+    CatToy[] _toys;
+    CatToy _currentLove;
+
+    public CatToy CurrentLove { get { return _currentLove; } }
+
     // Use this for initialization
     void Start ()
     {
-        Toys = new Toy[] {
-            new NamedObjToy("EndFlare")
-//            new NamedObjToy("Fish"), new NamedObjToy("Yarn"), new NamedObjToy("Robotuna"),
-            //new PathObjToy("Laser", "[CameraRig]", new[] { "Controller (right)", "LaserPointerContainer", "LaserPointer1", "EndFlare" })
-        };
+        _toys = GameObject.FindObjectsOfType<CatToy>();
+
+//        Toys = new Toy[] {
+//            new NamedObjToy("EndFlare")
+////            new NamedObjToy("Fish"), new NamedObjToy("Yarn"), new NamedObjToy("Robotuna"),
+//            //new PathObjToy("Laser", "[CameraRig]", new[] { "Controller (right)", "LaserPointerContainer", "LaserPointer1", "EndFlare" })
+//        };
         SetLove();
 	}
 	
@@ -33,8 +41,8 @@ public class CatLoves : MonoBehaviour {
     public void SetLove()
     {
         //Choose a Love
-        int index = Random.Range(0, Toys.Length);
-        CurrentLove = Toys[index];
+        int index = Random.Range(0, _toys.Length);
+        _currentLove = _toys[index];
 
         //Choose duration
         CurrentDuration = Random.Range(MinLoveDurationInSeconds, MaxLoveDurationInSeconds);
@@ -42,7 +50,7 @@ public class CatLoves : MonoBehaviour {
         var floatingText = this.transform.FindChild("FloatingText");
         if(floatingText != null)
         {
-            floatingText.GetComponent<TextMesh>().text = CurrentLove.ToyName;
+            floatingText.GetComponent<TextMesh>().text = _currentLove.ToyName;
         }
 
         Invoke("SetLove", CurrentDuration);

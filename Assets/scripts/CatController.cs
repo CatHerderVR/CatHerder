@@ -22,7 +22,8 @@ public class CatController : MonoBehaviour {
     {
         if (AlwaysChaseLove)
         {
-            var lpPos = this.GetComponent<CatLoves>().CurrentLove.GetPosition();
+            //            var lpPos = this.GetComponent<CatLoves>().CurrentLove.GetPosition();
+            var lpPos = this.GetComponent<CatLoves>().CurrentLove.AttractionTransform.position;
             var thisPos = this.transform.position;
             Vector3 vDiff = ( lpPos - thisPos );
             this.GetComponent<Rigidbody>().velocity = vDiff / vDiff.magnitude * CatSpeed;

@@ -28,9 +28,8 @@ namespace ExitGames.Demos.DemoAnimator
 
 		static public GameManager Instance;
 
-		[Tooltip("The prefab to use for representing the player")]
+        public GameObject roomPrefab;
 		public GameObject playerPrefab;
-
         public GameObject catToyPrefab;
 
 		#endregion
@@ -49,6 +48,8 @@ namespace ExitGames.Demos.DemoAnimator
         void Start()
         {
             Instance = this;
+
+            GameObject.Instantiate<GameObject>( Resources.Load<GameObject>( "Room" ) );
         }
 
 

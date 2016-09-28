@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CatToy : MonoBehaviour {
+public class CatToy : MonoBehaviour
+{
+    public string ToyName;
+    public Transform AttractionTransform;
 
+/*
     public string[] Toys;
 
     private int index = 0;
@@ -52,4 +56,5 @@ public class CatToy : MonoBehaviour {
         this.transform.FindChild("FloatingText").transform.LookAt(camera.transform);
         this.transform.FindChild("FloatingText").transform.Rotate(0, 180, 0);
     }
+    */
 }
