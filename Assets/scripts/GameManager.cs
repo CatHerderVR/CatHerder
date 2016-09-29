@@ -8,7 +8,7 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
+//using System;
 using System.Collections;
 
 using UnityEngine;
@@ -37,7 +37,6 @@ namespace ExitGames.Demos.DemoAnimator
 		#region Private Variables
 
 		private GameObject instance;
-
         #endregion
 
         #region MonoBehaviour CallBacks
@@ -107,7 +106,6 @@ namespace ExitGames.Demos.DemoAnimator
             {
                 GetComponent<CatSpawner>().SpawnCat();
             }
-
         }
 
         #endregion
