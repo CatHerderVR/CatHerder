@@ -14,12 +14,23 @@ public class CatSpawner : MonoBehaviour
 	void Update ()
     {
         GameObject rightController = GameObject.Find("Controller (right)");
+        GameObject leftController = GameObject.Find( "Controller (left)" );
 
-        if (rightController != null)
+        if( rightController != null)
         {
             var controllerRight = SteamVR_Controller.Input((int)rightController.GetComponent<SteamVR_TrackedObject>().index);
 
-            if (controllerRight.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger) == true)
+            if (controllerRight.GetPressUp(SteamVR_Controller.ButtonMask.Touchpad) == true)
+            {
+                SpawnCat();
+            }
+        }
+
+        if( leftController != null )
+        {
+            var controllerLeft = SteamVR_Controller.Input( (int)leftController.GetComponent<SteamVR_TrackedObject>().index );
+
+            if( controllerLeft.GetPressUp( SteamVR_Controller.ButtonMask.Touchpad ) == true )
             {
                 SpawnCat();
             }

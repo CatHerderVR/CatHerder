@@ -64,7 +64,7 @@ public class Player : Photon.PunBehaviour, IPunObservable
 
         if( photonView.isMine )
         {
-            playerGlobal = GameObject.Find( "SteamVR" ) ? GameObject.Find( "Camera (eye)" ).transform : GameObject.Find( "Main Camera" ).transform;
+            playerGlobal = GameObject.Find( "Camera (eye)" ) ? GameObject.Find( "Camera (eye)" ).transform : GameObject.Find( "Main Camera" ).transform;
             //playerLocal = GameObject.Find( "SteamVR" ) ? GameObject.Find( "Camera (head)" ).transform : GameObject.Find( "Test Camera" ).transform;
 
             //if( GameObject.Find("SteamVR") && GameObject.Find( "SteamVR" ).activeSelf)

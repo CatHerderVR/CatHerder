@@ -235,6 +235,8 @@ namespace ExitGames.Demos.DemoAnimator
 
             GameManager.Instance.SpawnPlayer();
 
+            feedbackText.gameObject.SetActive( false ); 
+
 			//LogFeedback("<Color=Green>OnJoinedRoom</Color> with "+PhotonNetwork.room.playerCount+" Player(s)");
 			//Debug.Log("DemoAnimator/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.\nFrom here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
 		

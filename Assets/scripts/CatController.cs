@@ -32,10 +32,10 @@ public class CatController : MonoBehaviour {
             anim.CrossFade("Run");
         }
 
-        if(TestToysWithViveControllers)
-        {
-            UpdateViveControllersTest();
-        }
+        //if(TestToysWithViveControllers)
+        //{
+        //    UpdateViveControllersTest();
+        //}
 
         ClampY();
         FaceInDirectionOfVelocity();
