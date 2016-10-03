@@ -1,36 +1,53 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CatController : MonoBehaviour {
+public class CatController : MonoBehaviour
+{
     public Vector3 initialVelocity;
-    private float yPosition;
-
     public bool TestToysWithViveControllers = true;
-    public bool AlwaysChaseLove = true;
+    public bool AlwaysChaseLove = false;
     public float CatSpeed = 1;
 
-	// Use this for initialization
-	void Start ()
+    CatLoves _catLoves;
+    float _yPosition;
+
+    void Start ()
     {
-        this.yPosition = this.transform.position.y;
-        this.GetComponent<Rigidbody>().velocity = initialVelocity;
-        FaceInDirectionOfVelocity();
-        MakeCatWalk();
-	}
+        _catLoves = this.GetComponent<CatLoves>();
+
+        _yPosition = this.transform.position.y;
+        
+        //this.GetComponent<Rigidbody>().velocity = initialVelocity;
+        //FaceInDirectionOfVelocity();
+        //MakeCatWalk();
+    }
 	
 	void FixedUpdate ()
     {
-        if (AlwaysChaseLove)
+        Vector3 curVelocity = this.GetComponent<Rigidbody>().velocity;
+        Vector3 targetVelocity = curVelocity;
+
+        if ( _catLoves.SeesLove || AlwaysChaseLove)
         {
             //            var lpPos = this.GetComponent<CatLoves>().CurrentLove.GetPosition();
-            var lpPos = this.GetComponent<CatLoves>().CurrentLove.AttractionTransform.position;
+            var lpPos = _catLoves.CurrentLove.AttractionTransform.position;
             var thisPos = this.transform.position;
             Vector3 vDiff = ( lpPos - thisPos );
-            this.GetComponent<Rigidbody>().velocity = vDiff / vDiff.magnitude * CatSpeed;
+            targetVelocity = vDiff / vDiff.magnitude * CatSpeed;
             var anim = this.GetComponentInChildren<Animation>();
             anim.wrapMode = WrapMode.Loop;
             anim.CrossFade("Run");
         }
+        else
+        {
+            targetVelocity = Vector3.zero;
+        }
+
+        //accelerate/decellerate kitty
+        Vector3 curAccel = Vector3.zero;
+        //targetVelocity = Vector3.SmoothDamp( curVelocity, targetVelocity, ref curAccel, 1 );
+
+        this.GetComponent<Rigidbody>().velocity = targetVelocity;
 
         //if(TestToysWithViveControllers)
         //{
@@ -38,21 +55,22 @@ public class CatController : MonoBehaviour {
         //}
 
         ClampY();
+
         FaceInDirectionOfVelocity();
    }
 
     void FaceInDirectionOfVelocity()
     {
         Vector3 velocity = this.GetComponent<Rigidbody>().velocity;
-
-        this.transform.rotation = Quaternion.LookRotation(velocity);
+        if(velocity.magnitude > 0)
+            this.transform.rotation = Quaternion.LookRotation(velocity);
     }
 
     void ClampY()
     {
-        this.GetComponent<Rigidbody>().velocity = new Vector3(this.GetComponent<Rigidbody>().velocity.x, 0, this.GetComponent<Rigidbody>().velocity.z);
+        this.GetComponent<Rigidbody>().velocity = new Vector3( this.GetComponent<Rigidbody>().velocity.x, 0, this.GetComponent<Rigidbody>().velocity.z );
 
-         this.transform.position = new Vector3(this.transform.position.x, yPosition, this.transform.position.z);
+        this.transform.position = new Vector3( this.transform.position.x, _yPosition, this.transform.position.z );
     }
 
     public void MakeCatRun()

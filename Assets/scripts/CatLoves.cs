@@ -15,10 +15,11 @@ public class CatLoves : MonoBehaviour
 
     CatToy[] _toys;
     CatToy _currentLove;
+    bool _seesLove;
 
     public CatToy CurrentLove { get { return _currentLove; } }
+    public bool SeesLove { get { return _seesLove; } }
 
-    // Use this for initialization
     void Start ()
     {
         _toys = GameObject.FindObjectsOfType<CatToy>();
@@ -34,6 +35,10 @@ public class CatLoves : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        //check if love is in view
+        Vector3 screenPoint = GetComponentInChildren<Camera>().WorldToViewportPoint( CurrentLove.transform.position );
+        _seesLove = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+
         TextFacesCamera();
         ImageFacesCamera();
 	}

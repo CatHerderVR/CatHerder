@@ -40,7 +40,8 @@ public class CatSpawner : MonoBehaviour
     public void SpawnCat()
     {
 
-        GameObject originalCat = Resources.Load<GameObject>( "Cats/" + _catNames[Random.Range(0,_catNames.Length)] );
+//        GameObject originalCat = Resources.Load<GameObject>( "Cats/" + _catNames[Random.Range(0,_catNames.Length)] );
+        GameObject originalCat = Resources.Load<GameObject>( "Cats/BlackCat" );
 
         GameObject.Instantiate(originalCat, new Vector3(Random.Range(-2,2), 0.05f, Random.Range(-2,2)), Quaternion.identity);
     }
