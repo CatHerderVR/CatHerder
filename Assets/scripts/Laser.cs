@@ -212,7 +212,7 @@ public class Laser : MonoBehaviour
                 ray = new Ray( StartPoint.position, LaserDir );
                 if( Physics.Raycast( ray, out hit, LaserDist, LaserMask ) )
                 {
-                    EndPos = hit.point;
+                    EndPos = hit.point - LaserDir * 0.05f;
 
                     if( EndFlare )
                     {

@@ -16,6 +16,7 @@ public class CatLoves : MonoBehaviour
     CatToy[] _toys;
     CatToy _currentLove;
     bool _seesLove;
+    Camera _kittyCam;
 
     public CatToy CurrentLove { get { return _currentLove; } }
     public bool SeesLove { get { return _seesLove; } }
@@ -23,6 +24,7 @@ public class CatLoves : MonoBehaviour
     void Start ()
     {
         _toys = GameObject.FindObjectsOfType<CatToy>();
+        _kittyCam = GetComponentInChildren<Camera>();
 
 //        Toys = new Toy[] {
 //            new NamedObjToy("EndFlare")
@@ -36,8 +38,8 @@ public class CatLoves : MonoBehaviour
 	void Update ()
     {
         //check if love is in view
-        Vector3 screenPoint = GetComponentInChildren<Camera>().WorldToViewportPoint( CurrentLove.transform.position );
-        _seesLove = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+        Vector3 screenPoint = _kittyCam.WorldToViewportPoint( CurrentLove.transform.position );
+        _seesLove = screenPoint.z < _kittyCam.farClipPlane && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
 
         TextFacesCamera();
         ImageFacesCamera();

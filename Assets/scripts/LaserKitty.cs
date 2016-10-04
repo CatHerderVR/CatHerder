@@ -18,5 +18,9 @@ public class LaserKitty : MonoBehaviour
         {
             _laser.LaserOn = _nvr.AttachedHand.UseButtonPressed;
         }
+        else if( _laser.LaserOn )
+        {
+            _laser.LaserOn = false;
+        }
     }
 }

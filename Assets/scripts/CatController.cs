@@ -3,49 +3,82 @@ using System.Collections;
 
 public class CatController : MonoBehaviour
 {
+    public enum State
+    {
+        Idle,
+        Stalking,
+        Playing
+    }
+
     public Vector3 initialVelocity;
     public bool TestToysWithViveControllers = true;
     public bool AlwaysChaseLove = false;
-    public float CatSpeed = 1;
+    public float WalkSpeed = 0.5f;
+    public float RunSpeed = 1;
+    public float MinWalkTime = 3f;
+    public float MaxWalkTime = 7f;
 
+    State _curState = State.Idle;
+    float _curIdleTime = 0;
+    float _targetIdleTime = 0;
     CatLoves _catLoves;
     float _yPosition;
+    Vector3 _curAccel = Vector3.zero;
+    Camera _kittyCam;
 
     void Start ()
     {
         _catLoves = this.GetComponent<CatLoves>();
-
         _yPosition = this.transform.position.y;
-        
+        _kittyCam = GetComponentInChildren<Camera>();
+
         //this.GetComponent<Rigidbody>().velocity = initialVelocity;
         //FaceInDirectionOfVelocity();
         //MakeCatWalk();
     }
-	
-	void FixedUpdate ()
+
+    void FixedUpdate ()
     {
         Vector3 curVelocity = this.GetComponent<Rigidbody>().velocity;
         Vector3 targetVelocity = curVelocity;
 
-        if ( _catLoves.SeesLove || AlwaysChaseLove)
+        float distToLove = ( _catLoves.CurrentLove.AttractionTransform.position - _kittyCam.transform.position ).magnitude;
+        if(distToLove < 0.2f)
         {
+            _curState = State.Playing;
+            targetVelocity = Vector3.zero;
+            MakeCatPlay();
+        }
+        else if ( _catLoves.SeesLove || AlwaysChaseLove)
+        {
+            _curState = State.Stalking;
             //            var lpPos = this.GetComponent<CatLoves>().CurrentLove.GetPosition();
             var lpPos = _catLoves.CurrentLove.AttractionTransform.position;
             var thisPos = this.transform.position;
             Vector3 vDiff = ( lpPos - thisPos );
-            targetVelocity = vDiff / vDiff.magnitude * CatSpeed;
-            var anim = this.GetComponentInChildren<Animation>();
-            anim.wrapMode = WrapMode.Loop;
-            anim.CrossFade("Run");
+            targetVelocity = vDiff / vDiff.magnitude * RunSpeed;
+            //var anim = this.GetComponentInChildren<Animation>();
+            //anim.wrapMode = WrapMode.Loop;
+            //anim.CrossFade("Run");
+            MakeCatRun();
         }
         else
         {
-            targetVelocity = Vector3.zero;
+            _curState = State.Idle;
+            _curIdleTime -= Time.deltaTime;
+            if( _curIdleTime <= 0 )
+            {
+                Vector3 randDirection = new Vector3( Random.value, 0, Random.value );
+                targetVelocity = randDirection/randDirection.magnitude * WalkSpeed;
+                _curIdleTime = Random.Range( MinWalkTime, MaxWalkTime );
+            }
+
+            MakeCatWalk();
         }
 
         //accelerate/decellerate kitty
-        Vector3 curAccel = Vector3.zero;
-        //targetVelocity = Vector3.SmoothDamp( curVelocity, targetVelocity, ref curAccel, 1 );
+        //targetVelocity = Vector3.SmoothDamp( curVelocity, targetVelocity, ref _curAccel, 0.3f);
+        //targetVelocity = Vector3.Lerp( curVelocity, targetVelocity, 1 );
 
         this.GetComponent<Rigidbody>().velocity = targetVelocity;
 
@@ -75,18 +108,18 @@ public class CatController : MonoBehaviour
 
     public void MakeCatRun()
     {
-        this.transform.GetComponentInChildren<Animation>().PlayQueued("Run");
+        //this.transform.GetComponentInChildren<Animation>().PlayQueued("Run");
 
         Animation anim = this.GetComponentInChildren<Animation>();
 
-        anim.Play("Run");
+        anim.CrossFade("Run");
     }
 
     public void MakeCatPounce()
     {
         Animation anim = this.GetComponentInChildren<Animation>();
 
-        anim.Play("Run");
+        anim.CrossFade( "Run");
         anim.wrapMode = WrapMode.Once;
     }
 
@@ -94,7 +127,7 @@ public class CatController : MonoBehaviour
     {
         Animation anim = this.GetComponentInChildren<Animation>();
 
-        anim.Play("Walk");
+        anim.CrossFade( "Walk");
         anim.wrapMode = WrapMode.Loop;
     }
 
@@ -102,7 +135,18 @@ public class CatController : MonoBehaviour
     {
         Animation anim = this.GetComponentInChildren<Animation>();
 
-        anim.Play("Dance");
+        anim.CrossFade( "Dance");
+        anim.wrapMode = WrapMode.Loop;
+
+        this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+    }
+
+
+    public void MakeCatPlay()
+    {
+        Animation anim = this.GetComponentInChildren<Animation>();
+
+        anim.CrossFade( "Idle03" );
         anim.wrapMode = WrapMode.Loop;
 
         this.GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -201,11 +245,11 @@ public class CatController : MonoBehaviour
 
     }
     
-    void OnTriggerEnter(Collider coll)
-    { 
-        if (coll.gameObject.layer == 10)
-        {
-            MakeCatDance();
-        }
-    }
+    //void OnTriggerEnter(Collider coll)
+    //{ 
+    //    if (coll.gameObject.layer == 10)
+    //    {
+    //        MakeCatDance();
+    //    }
+    //}
 }

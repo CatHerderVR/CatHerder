@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CatSpawner : MonoBehaviour
 {
-    string[] _catNames = { "SiameseCat", "BlackCat", "OrangeCat", "StripedCat" };
+    string[] _catNames = { "Siamese", "Black", "Orange", "Striped" };
 
     // Use this for initialization
     void Start () {
@@ -40,9 +40,12 @@ public class CatSpawner : MonoBehaviour
     public void SpawnCat()
     {
 
-//        GameObject originalCat = Resources.Load<GameObject>( "Cats/" + _catNames[Random.Range(0,_catNames.Length)] );
-        GameObject originalCat = Resources.Load<GameObject>( "Cats/BlackCat" );
+        //        GameObject originalCat = Resources.Load<GameObject>( "Cats/" + _catNames[Random.Range(0,_catNames.Length)] );
+        //        GameObject originalCat = Resources.Load<GameObject>( "Cats/BlackCat" );
 
-        GameObject.Instantiate(originalCat, new Vector3(Random.Range(-2,2), 0.05f, Random.Range(-2,2)), Quaternion.identity);
+        GameObject kitty = GameObject.Instantiate( Resources.Load<GameObject>( "Kitty/Kitty" ), new Vector3(Random.Range(-2,2), 0.05f, Random.Range(-2,2)), Quaternion.identity) as GameObject;
+
+        //randomly select skin
+        kitty.GetComponentInChildren<SkinnedMeshRenderer>().material = Resources.Load<Material>( "Kitty/" + _catNames[Random.Range( 0, _catNames.Length )] );
     }
 }
