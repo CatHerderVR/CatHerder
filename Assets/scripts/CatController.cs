@@ -7,7 +7,8 @@ public class CatController : MonoBehaviour
     {
         Idle,
         Stalking,
-        Playing
+        Playing,
+        Listening
     }
 
     public Vector3 initialVelocity;
@@ -17,10 +18,11 @@ public class CatController : MonoBehaviour
     public float RunSpeed = 1;
     public float MinWalkTime = 3f;
     public float MaxWalkTime = 7f;
+    public float ListenTime = 3f;
 
     State _curState = State.Idle;
     float _curIdleTime = 0;
-    float _targetIdleTime = 0;
+    float _curListenTime = 0;
     CatLoves _catLoves;
     float _yPosition;
     Vector3 _curAccel = Vector3.zero;
@@ -61,6 +63,20 @@ public class CatController : MonoBehaviour
             //anim.wrapMode = WrapMode.Loop;
             //anim.CrossFade("Run");
             MakeCatRun();
+        }
+        else if(_curState == State.Listening)
+        {
+            _curListenTime -= Time.deltaTime;
+            if( _curListenTime < 0 )
+                _curState = State.Idle;
+            else
+            {
+                Vector3 playerPos = GameObject.FindGameObjectWithTag( "MainCamera" ).transform.position;
+                Vector3 vDiff = playerPos - transform.position;
+                if( vDiff.magnitude > 0 )
+                    transform.rotation = Quaternion.LookRotation( vDiff );
+                targetVelocity = Vector3.zero;
+            }
         }
         else
         {
@@ -147,6 +163,19 @@ public class CatController : MonoBehaviour
         Animation anim = this.GetComponentInChildren<Animation>();
 
         anim.CrossFade( "Idle03" );
+        anim.wrapMode = WrapMode.Loop;
+
+        this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+    }
+
+    public void MakeCatListen()
+    {
+        _curState = State.Listening;
+        _curListenTime = ListenTime;
+
+        Animation anim = this.GetComponentInChildren<Animation>();
+
+        anim.CrossFade( "Idle02" );
         anim.wrapMode = WrapMode.Loop;
 
         this.GetComponent<Rigidbody>().velocity = Vector3.zero;

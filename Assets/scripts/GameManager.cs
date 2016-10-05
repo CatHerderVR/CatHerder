@@ -1,20 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Launcher.cs" company="Exit Games GmbH">
-//   Part of: Photon Unity Networking Demos
-// </copyright>
-// <summary>
-//  Used in "PUN Basic tutorial" to handle typical game management requirements
-// </summary>
-// <author>developer@exitgames.com</author>
-// --------------------------------------------------------------------------------------------------------------------
+﻿using UnityEngine;
+using UnityEngine.Windows.Speech;
+using System.Collections.Generic;
 
-//using System;
-using System.Collections;
-
-using UnityEngine;
-using UnityEngine.SceneManagement; 
-
-namespace ExitGames.Demos.DemoAnimator
+namespace CatHerder
 {
 	/// <summary>
 	/// Game manager.
@@ -24,31 +12,45 @@ namespace ExitGames.Demos.DemoAnimator
 	/// </summary>
 	public class GameManager : Photon.MonoBehaviour {
 
-		#region Public Variables
+        public static string[] CatTypes = { "Siamese", "Black", "Orange", "Striped" };
+        public static string[] CatNames = { "Fluffy", "Boris", "Cheetoh", "Keekee", "Milo", "Bernie", "Kai", "Vincent", "Simon" };
 
-		static public GameManager Instance;
+        #region Public Variables
+
+        static public GameManager Instance;
 
         public GameObject roomPrefab;
 		public GameObject playerPrefab;
         public GameObject catToyPrefab;
 
-		#endregion
+        #endregion
 
-		#region Private Variables
+        #region Private Variables
 
-		private GameObject instance;
+        Dictionary<string, GameObject> _kitties;
+        KeywordRecognizer _keywordRecognizer;
+
         #endregion
 
         #region MonoBehaviour CallBacks
 
-        /// <summary>
-        /// MonoBehaviour method called on GameObject by Unity during initialization phase.
-        /// </summary>
+        void Awake()
+        {
+            _kitties = new Dictionary<string, GameObject>();
+
+            //shuffle arrays to randomize
+            Shuffle( CatNames );
+        }
+
         void Start()
         {
             Instance = this;
 
-            GameObject.Instantiate<GameObject>( Resources.Load<GameObject>( "Room" ) );
+            GameObject.Instantiate<GameObject>( roomPrefab );
+
+            _keywordRecognizer = new KeywordRecognizer( CatNames );
+            _keywordRecognizer.OnPhraseRecognized += OnKittyName;
+            _keywordRecognizer.Start();
         }
 
 
@@ -68,7 +70,7 @@ namespace ExitGames.Demos.DemoAnimator
 			} else {
 				
 
-				if (PlayerManager.LocalPlayerInstance==null)
+				if (Player.LocalPlayerInstance==null)
 				{
 					Debug.Log("We are Instantiating LocalPlayer from "+SceneManagerHelper.ActiveSceneName);
 
@@ -104,7 +106,30 @@ namespace ExitGames.Demos.DemoAnimator
 
             if( Input.GetKeyUp( KeyCode.Space ) )
             {
-                GetComponent<CatSpawner>().SpawnCat();
+                SpawnCat();
+            }
+
+            GameObject rightController = GameObject.Find( "Controller (right)" );
+            GameObject leftController = GameObject.Find( "Controller (left)" );
+
+            if( rightController != null )
+            {
+                var controllerRight = SteamVR_Controller.Input( (int)rightController.GetComponent<SteamVR_TrackedObject>().index );
+
+                if( controllerRight.GetPressUp( SteamVR_Controller.ButtonMask.Touchpad ) == true )
+                {
+                    SpawnCat();
+                }
+            }
+
+            if( leftController != null )
+            {
+                var controllerLeft = SteamVR_Controller.Input( (int)leftController.GetComponent<SteamVR_TrackedObject>().index );
+
+                if( controllerLeft.GetPressUp( SteamVR_Controller.ButtonMask.Touchpad ) == true )
+                {
+                    SpawnCat();
+                }
             }
         }
 
@@ -163,9 +188,47 @@ namespace ExitGames.Demos.DemoAnimator
 			Application.Quit();
 		}
 
-		#endregion
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
+
+        void SpawnCat()
+        {
+            if( _kitties.Count < GameManager.CatNames.Length )
+            {
+                GameObject kitty = GameObject.Instantiate( Resources.Load<GameObject>( "Kitty/Kitty" ), new Vector3( Random.Range( -2, 2 ), 0, Random.Range( -2, 2 ) ), Quaternion.identity ) as GameObject;
+
+                //randomly select skin
+                kitty.GetComponentInChildren<SkinnedMeshRenderer>().material = Resources.Load<Material>( "Kitty/" + GameManager.CatTypes[Random.Range( 0, GameManager.CatTypes.Length )] );
+
+                string strName = GameManager.CatNames[_kitties.Count];
+                kitty.GetComponentInChildren<CatLoves>().CatName = strName;
+                kitty.name = "Kitty - " + strName;
+                _kitties.Add( strName, kitty );
+            }
+        }
+
+        void OnKittyName( PhraseRecognizedEventArgs args )
+        {
+            GameObject kitty;
+            if( _kitties.TryGetValue( args.text, out kitty ) )
+            {
+                kitty.GetComponent<CatController>().MakeCatListen();
+            }
+        }
+
+        void Shuffle( string[] arr )
+        {
+            for( int i = 0; i < arr.Length; i++ )
+            {
+                int rand = Random.Range( 0, arr.Length );
+                string a = arr[i];
+                string b = arr[rand];
+                arr[i] = b;
+                arr[rand] = a;
+            }
+        }
+
 		#endregion
 
 	}

@@ -128,7 +128,7 @@ namespace ExitGames.Demos.DemoAnimator
 
                 if (this.Health <= 0f)
                 {
-                    GameManager.Instance.LeaveRoom();
+                    //GameManager.Instance.LeaveRoom();
                 }
             }
 

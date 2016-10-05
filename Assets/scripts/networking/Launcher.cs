@@ -20,7 +20,7 @@ using Random = UnityEngine.Random;
 /// <summary>
 /// Launch manager. Connect, join a random room or create one if none or all full.
 /// </summary>
-namespace ExitGames.Demos.DemoAnimator
+namespace CatHerder
 {
 	public class Launcher : Photon.PunBehaviour {
 

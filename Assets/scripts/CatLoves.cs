@@ -13,11 +13,13 @@ public class CatLoves : MonoBehaviour
     public int MaxLoveDurationInSeconds = 15;
     public int MinLoveDurationInSeconds = 5;
 
+    string _catName;
     CatToy[] _toys;
     CatToy _currentLove;
     bool _seesLove;
     Camera _kittyCam;
 
+    public string CatName { get { return _catName; } set { _catName = value; } }
     public CatToy CurrentLove { get { return _currentLove; } }
     public bool SeesLove { get { return _seesLove; } }
 
@@ -57,7 +59,7 @@ public class CatLoves : MonoBehaviour
         var floatingText = this.transform.FindChild("FloatingText");
         if(floatingText != null)
         {
-            floatingText.GetComponent<TextMesh>().text = _currentLove.ToyName;
+            floatingText.GetComponent<TextMesh>().text = _catName + " | " + _currentLove.ToyName;
         }
 
         Invoke("SetLove", CurrentDuration);
@@ -65,7 +67,7 @@ public class CatLoves : MonoBehaviour
 
     public void TextFacesCamera()
     {
-        GameObject camera = GameObject.Find("Main Camera");
+        GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
         if (camera == null)
         {
             camera = GameObject.Find("[CameraRig]");
